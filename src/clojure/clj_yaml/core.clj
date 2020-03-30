@@ -1,6 +1,5 @@
 (ns clj-yaml.core
-  (:require [flatland.ordered.map :refer (ordered-map)]
-            [flatland.ordered.set :refer (ordered-set)])
+  (:require [linked.core :as linked])
   (:import (org.yaml.snakeyaml Yaml DumperOptions DumperOptions$FlowStyle)
            (org.yaml.snakeyaml.constructor Constructor SafeConstructor BaseConstructor)
            (org.yaml.snakeyaml.representer Representer)
@@ -100,13 +99,13 @@
                 ;; (keyword k) is nil for numbers etc
                 (or (keyword k) k)
                 k))]
-      (into (ordered-map)
+      (into (linked/map)
             (for [[k v] data]
               [(-> k (decode keywords) decode-key) (decode v keywords)]))))
 
   java.util.LinkedHashSet
   (decode [data keywords]
-    (into (ordered-set) data))
+    (into (linked/set) data))
 
   java.util.ArrayList
   (decode [data keywords]
